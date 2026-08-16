@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaibhav Rajesh — Portfolio</title>
+<style>
+:root{--crimson:#DC143C;--chalk:#F2EFE7;--ink:#171717;--muted:#6e6964;--line:rgba(23,23,23,.16)}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--chalk);color:var(--ink);font-family:Arial,Helvetica,sans-serif;position:relative}
+#dotMatrix{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none}
+body:before{content:"";position:fixed;inset:0;background:rgba(242,239,231,.54);z-index:-1;pointer-events:none} a{color:inherit}.wrap{width:min(1180px,calc(100% - 48px));margin:auto}
+nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{font-family:Georgia,serif;font-size:25px;font-weight:700}.navlinks{display:flex;gap:28px;align-items:center;font-size:13px}.navlinks a{text-decoration:none}.pill{border:1px solid var(--ink);border-radius:999px;padding:10px 16px}
+.hero{min-height:600px;display:grid;grid-template-columns:1.25fr .75fr;gap:70px;align-items:center;padding:70px 0}.eyebrow,.label{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:700;color:var(--crimson)}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(62px,8vw,118px);line-height:.88;letter-spacing:-.055em;margin:20px 0 30px}.hero p{font-size:19px;line-height:1.55;max-width:650px;color:#47423e}.actions{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}.btn{display:inline-block;text-decoration:none;border:1px solid var(--ink);padding:14px 20px;border-radius:999px;font-size:13px;font-weight:700}.btn.primary{background:var(--crimson);border-color:var(--crimson);color:var(--chalk)}.statbox{border-left:1px solid var(--line);padding-left:40px}.stat{padding:25px 0;border-bottom:1px solid var(--line)}.stat strong{font-family:Georgia,serif;color:var(--crimson);font-size:46px;font-weight:400;display:block}.stat span{font-size:13px;color:var(--muted)}
+.contact-strip{display:flex;flex-wrap:wrap;gap:10px 22px;padding:0 0 34px;font-size:12px;color:var(--muted)}.contact-strip a{text-decoration:none}.contact-strip a:hover{color:var(--crimson)}
+section{padding:90px 0;border-top:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:42px}h2{font-family:Georgia,serif;font-size:52px;font-weight:400;letter-spacing:-.035em;margin:10px 0 0}.section-head p{max-width:430px;color:var(--muted);line-height:1.6}
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{position:relative;min-height:320px;border:1px solid var(--line);padding:30px;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;overflow:hidden;transition:.25s ease}.card:after{content:"↗";position:absolute;right:28px;top:24px;font-size:22px}.card:hover{transform:translateY(-4px);background:#fffaf2}.card.featured{background:var(--crimson);color:var(--chalk);border-color:var(--crimson)}.card.featured .meta,.card.featured p{color:#f8dfe4}.card h3{font-family:Georgia,serif;font-size:34px;font-weight:400;margin:8px 0 12px}.card p{line-height:1.55;color:#5d5751;max-width:90%}.meta{text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:700;color:var(--muted)}.award{display:inline-block;margin-top:12px;border:1px solid currentColor;border-radius:999px;padding:7px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:70px}.skill-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.skill{border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:12px}.timeline{border-top:1px solid var(--line)}.item{padding:22px 0;border-bottom:1px solid var(--line)}.item h3{font-family:Georgia,serif;font-size:25px;font-weight:400;margin:0 0 8px}.item p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+footer{background:var(--crimson);color:var(--chalk);padding:75px 0}footer h2{font-size:clamp(46px,7vw,88px);margin-bottom:28px}.contact{display:flex;justify-content:space-between;align-items:end;gap:30px}.contact p{color:#f8dfe4;max-width:520px;line-height:1.6}footer .btn{border-color:var(--chalk)}.small{margin-top:60px;padding-top:20px;border-top:1px solid rgba(255,255,255,.35);display:flex;justify-content:space-between;font-size:11px}
+.reveal{opacity:0;transform:translateY(18px);transition:.65s ease}.reveal.show{opacity:1;transform:none}
+
+/* ---------- motion layer ---------- */
+
+footer .label,
+footer h2,
+footer .contact,
+footer .small{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+footer.footer-visible .label{opacity:1;transform:none;transition-delay:.05s}
+footer.footer-visible h2{opacity:1;transform:none;transition-delay:.12s}
+footer.footer-visible .contact{opacity:1;transform:none;transition-delay:.20s}
+footer.footer-visible .small{opacity:1;transform:none;transition-delay:.28s}
+
+body{overflow-x:hidden}
+nav{position:relative}
+nav:after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-1px;
+  width:0; height:1px;
+  background:var(--crimson);
+  animation:navLine 1.1s cubic-bezier(.2,.7,.2,1) .15s forwards;
+}
+@keyframes navLine{to{width:100%}}
+
+.brand{
+  opacity:0;
+  transform:translateY(-10px);
+  animation:dropIn .7s cubic-bezier(.2,.7,.2,1) .1s forwards;
+}
+.navlinks a{
+  opacity:0;
+  transform:translateY(-8px);
+  animation:dropIn .55s ease forwards;
+}
+.navlinks a:nth-child(1){animation-delay:.18s}
+.navlinks a:nth-child(2){animation-delay:.26s}
+.navlinks a:nth-child(3){animation-delay:.34s}
+@keyframes dropIn{to{opacity:1;transform:none}}
+
+.hero .eyebrow{
+  opacity:0;
+  transform:translateY(12px);
+  animation:heroUp .65s cubic-bezier(.2,.7,.2,1) .25s forwards;
+}
+.hero h1{
+  opacity:0;
+  transform:translateY(22px);
+  animation:heroUp .9s cubic-bezier(.16,.75,.22,1) .38s forwards;
+}
+.hero p{
+  opacity:0;
+  transform:translateY(16px);
+  animation:heroUp .75s ease .58s forwards;
+}
+.hero .actions{
+  opacity:0;
+  transform:translateY(12px);
+  animation:heroUp .7s ease .72s forwards;
+}
+@keyframes heroUp{to{opacity:1;transform:none}}
+
+.hero h1 .word{
+  display:inline-block;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), color .35s ease;
+}
+.hero h1:hover .word:nth-child(1){transform:translateY(-3px)}
+.hero h1:hover .word:nth-child(2){transform:translateY(3px);color:var(--crimson)}
+
+.btn{
+  position:relative;
+  overflow:hidden;
+  transition:transform .22s ease, background .22s ease, color .22s ease, border-color .22s ease;
+}
+.btn:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--crimson);
+  transform:translateX(-105%);
+  transition:transform .32s cubic-bezier(.2,.7,.2,1);
+  z-index:-1;
+}
+.btn:not(.primary):hover{color:var(--chalk);border-color:var(--crimson);transform:translateY(-2px)}
+.btn:not(.primary):hover:before{transform:translateX(0)}
+.btn.primary:hover{transform:translateY(-2px) scale(1.015)}
+
+.stat{
+  position:relative;
+  overflow:hidden;
+}
+.stat:before{
+  content:"";
+  position:absolute;
+  left:0; bottom:0;
+  width:0; height:1px;
+  background:var(--crimson);
+  transition:width .55s cubic-bezier(.2,.7,.2,1);
+}
+.stat:hover:before{width:100%}
+.stat strong{
+  transition:transform .3s ease;
+}
+.stat:hover strong{transform:translateX(5px)}
+
+.contact-strip{
+  opacity:0;
+  transform:translateY(10px);
+  animation:heroUp .65s ease .92s forwards;
+}
+.contact-strip a{position:relative}
+.contact-strip a:after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-3px;
+  width:0; height:1px;
+  background:var(--crimson);
+  transition:width .25s ease;
+}
+.contact-strip a:hover:after{width:100%}
+
+.section-head h2, .split h2{
+  position:relative;
+  display:inline-block;
+}
+.section-head h2:after, .split h2:after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-10px;
+  width:0; height:2px;
+  background:var(--crimson);
+  transition:width .8s cubic-bezier(.2,.7,.2,1) .1s;
+}
+.reveal.show .section-head h2:after,
+.section-head.reveal.show h2:after,
+.split .reveal.show h2:after{width:72px}
+
+.card:before{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  background:rgba(220,20,60,.10);
+  filter:blur(28px);
+  left:var(--mx,50%); top:var(--my,50%);
+  transform:translate(-50%,-50%) scale(.6);
+  opacity:0;
+  transition:opacity .25s ease, transform .25s ease;
+  pointer-events:none;
+}
+.card:hover:before{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.card.featured:before{background:rgba(242,239,231,.15)}
+.card > *{position:relative;z-index:1}
+
+.skill{
+  transition:transform .22s ease, border-color .22s ease, color .22s ease, background .22s ease;
+}
+.skill:hover{
+  transform:translateY(-3px);
+  border-color:rgba(220,20,60,.45);
+  color:var(--crimson);
+  background:rgba(255,255,255,.25);
+}
+
+.item{
+  position:relative;
+  transition:padding-left .28s ease;
+}
+.item:before{
+  content:"";
+  position:absolute;
+  left:0; top:22px;
+  width:3px; height:0;
+  background:var(--crimson);
+  transition:height .3s ease;
+}
+.item:hover{padding-left:14px}
+.item:hover:before{height:45px}
+
+
+
+@media (prefers-reduced-motion: reduce){
+  *,*:before,*:after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  }
+
+@media(max-width:800px){.wrap{width:min(100% - 28px,1180px)}.navlinks a:not(.pill){display:none}.hero{grid-template-columns:1fr;gap:25px;min-height:auto;padding:65px 0}.statbox{border-left:0;border-top:1px solid var(--line);padding-left:0;display:grid;grid-template-columns:1fr 1fr}.projects,.split{grid-template-columns:1fr}.section-head,.contact{display:block}section{padding:65px 0}.card{min-height:280px}}
+</style>
+</head>
+<body>
+<canvas id="dotMatrix" aria-hidden="true"></canvas>
+<div class="wrap">
+<nav><div class="brand">Vaibhav Rajesh</div><div class="navlinks"><a href="#work">Work</a><a href="#about">About</a><a class="pill" href="#contact">Contact</a></div></nav>
+<header class="hero">
+<div class="reveal"><div class="eyebrow">Student developer · Designer · Engineer</div><h1><span class="word">I build things</span><br><span class="word">for the web.</span></h1><p>I design and develop interactive digital experiences, combining front-end development, UI/UX, and an engineering mindset.</p><div class="actions"><a class="btn primary" href="#work">Explore my work</a><a class="btn" href="Vaibhav_Rajesh_Resume.pdf" target="_blank">Résumé ↗</a></div></div>
+<aside class="statbox reveal"><div class="stat"><strong>04</strong><span>Deployed web projects</span></div><div class="stat"><strong>02</strong><span>Hackathon honorable mentions</span></div><div class="stat"><strong>∞</strong><span>Things I still want to build</span></div></aside>
+</header>
+<div class="contact-strip reveal"><a href="mailto:Vaibhav.rajesh@outlook.com">Vaibhav.rajesh@outlook.com</a><a href="tel:+14253268943">(425) 326-8943</a><a href="https://github.com/Quackels" target="_blank" rel="noopener">github.com/Quackels ↗</a><span>Eastlake High School · Sammamish, Washington</span></div>
+</div>
+<section id="work"><div class="wrap"><div class="section-head reveal"><div><div class="label">Selected work</div><h2>Projects with proof.</h2></div><p>From hackathon prototypes to academic experiences — each project was designed, built, and deployed as a working website.</p></div><div class="projects">
+<a class="card featured reveal" target="_blank" rel="noopener" href="https://quackels.github.io/NightWrite/"><div><div class="meta">Web application prototype</div><h3>NightWrite</h3><p>An app-style web experience developed for a hackathon, with an emphasis on atmosphere, interface design, and interaction.</p></div><div><span class="award">Hackathon · Honorable Mention</span></div></a>
+<a class="card reveal" target="_blank" rel="noopener" href="https://quackels.github.io/OceansClock/"><div><div class="meta">Interactive web experience</div><h3>Ocean's Clock</h3><p>An environmental-themed experience combining front-end development, visual storytelling, and interactive presentation.</p></div><div><span class="award">Hackathon · Honorable Mention</span></div></a>
+<a class="card reveal" target="_blank" rel="noopener" href="https://quackels.github.io/womens-rights-project/"><div><div class="meta">Academic project</div><h3>Women's Rights Movement</h3><p>A research-heavy educational project transformed into an organized, interactive website with navigation and quiz functionality.</p></div><div class="meta">HTML · CSS · JavaScript</div></a>
+<a class="card reveal" target="_blank" rel="noopener" href="https://quackels.github.io/APLangSum/"><div><div class="meta">Academic project</div><h3>AP Language Summer</h3><p>A custom digital presentation focused on typography, visual hierarchy, readability, and a more engaging approach to academic work.</p></div><div class="meta">HTML · CSS · JavaScript</div></a>
+</div></div></section>
+<section id="about"><div class="wrap split"><div class="reveal"><div class="label">About / toolkit</div><h2>Design meets engineering.</h2><p style="color:var(--muted);line-height:1.7;font-size:16px">I'm an aspiring Electrical & Computer Engineer who also builds for the web. That combination shapes how I work: visual enough to care about the experience, technical enough to care about how it actually works.</p><div class="skill-list"><span class="skill">HTML5</span><span class="skill">CSS3</span><span class="skill">JavaScript</span><span class="skill">UI/UX</span><span class="skill">Git / GitHub</span><span class="skill">Java</span><span class="skill">MATLAB</span><span class="skill">Arduino / C++</span><span class="skill">KiCad</span><span class="skill">Autodesk Inventor</span></div></div><div class="timeline reveal"><div class="item"><div class="meta">Current project</div><h3>WireLab</h3><p>Browser-based electrical design and documentation platform with interactive circuit construction and engineering-focused tools.</p></div><div class="item"><div class="meta">Engineering project</div><h3>Smart Plant Monitor</h3><p>Embedded system integrating sensors, live statistics, automated feedback, and an interactive OLED interface.</p></div><div class="item"><div class="meta">Education</div><h3>Eastlake High School · Bellevue College</h3><p>Eastlake High School, Sammamish, Washington · High School Diploma expected 2027 · Running Start at Bellevue College · MATLAB Onramp certified.</p></div></div></div></section>
+<footer id="contact"><div class="wrap"><div class="label" style="color:var(--chalk)">Let's work together</div><h2>Have something worth building?</h2><div class="contact"><p>I'm interested in opportunities where thoughtful design and technical problem-solving can turn an idea into a polished digital experience.</p><div><a class="btn" href="mailto:Vaibhav.rajesh@outlook.com">Email me</a> <a class="btn" href="tel:+14253268943">Call</a> <a class="btn" target="_blank" rel="noopener" href="https://github.com/Quackels">GitHub ↗</a></div></div><div class="small"><span>Vaibhav Rajesh · 2026</span><span>Designed & built for the web.</span></div></div></footer>
+<script>const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));</script>
+
+<script>
+const dotCanvas=document.getElementById('dotMatrix');
+const dotCtx=dotCanvas.getContext('2d');
+let matrixDots=[], cursor={x:-9999,y:-9999};
+
+function buildMatrix(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  dotCanvas.width=innerWidth*dpr; dotCanvas.height=innerHeight*dpr;
+  dotCanvas.style.width=innerWidth+'px'; dotCanvas.style.height=innerHeight+'px';
+  dotCtx.setTransform(dpr,0,0,dpr,0,0);
+  matrixDots=[];
+  const gap=27;
+  for(let y=14;y<innerHeight;y+=gap)
+    for(let x=14;x<innerWidth;x+=gap) matrixDots.push({x,y});
+  drawMatrix();
+}
+function drawMatrix(){
+  dotCtx.clearRect(0,0,innerWidth,innerHeight);
+  matrixDots.forEach(d=>{
+    const dx=d.x-cursor.x,dy=d.y-cursor.y,dist=Math.hypot(dx,dy);
+    const influence=Math.max(0,1-dist/140);
+    const yy=d.y+influence*7;
+    dotCtx.beginPath();
+    dotCtx.arc(d.x,yy,1.3+influence*.7,0,Math.PI*2);
+    dotCtx.fillStyle=`rgba(232,78,105,${.30+influence*.20})`;
+    dotCtx.fill();
+  });
+}
+addEventListener('mousemove',e=>{cursor={x:e.clientX,y:e.clientY};drawMatrix()});
+addEventListener('mouseleave',()=>{cursor={x:-9999,y:-9999};drawMatrix()});
+addEventListener('resize',buildMatrix);
+buildMatrix();
+</script>
+
+
+<script>
+
+/* understated footer reveal */
+const footerEl = document.querySelector('footer');
+if (footerEl){
+  const footerObs = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting) footerEl.classList.add('footer-visible');
+    });
+  }, {threshold:.18});
+  footerObs.observe(footerEl);
+}
+
+</script>
+
+</body></html>
